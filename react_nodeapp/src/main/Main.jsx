@@ -9,7 +9,7 @@ const Main = ({ activeNote, onUpdateNote }) => {
         });
     };
 
-    if (!activeNote) return <div className="no-active-notess">No Active Note</div>;
+    if (!activeNote) return <div className="no-active-note">No Active Note</div>;
 
     return (
         <div className="app-main">

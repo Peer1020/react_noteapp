@@ -37,6 +37,7 @@
     ]
   },
   "devDependencies": {
-    "react-markdown": "^7.0.1"
+    "react-markdown": "^7.0.1",
+    "react-uuid": "^1.0.2"
   }
 }
