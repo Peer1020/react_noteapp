@@ -28,6 +28,8 @@ const Main = ({ activeNote, onUpdateNote }) => {
                     value={activeNote.body}
                     onChange={(e) => onEditField("body", e.target.value)}
                 />
+                <button onClick={(e) => onEditField("content")}>Submit</button>
+
             </div>
             <div className="app-main-note-preview">
                 <h1 className="preview-title">{activeNote.title}</h1>
