@@ -2,6 +2,8 @@ import React from 'react';
 import ReactMarkdown from "react-markdown";
 import Select, {components} from "react-select";
 import {useState} from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const importance = [
     {value: '', label: 'Select importance',},
@@ -13,7 +15,6 @@ const importance = [
 ];
 
 
-
 const CustomSelectProps = props => {
     const [clickCount, setClickCount] = useState(0);
 
@@ -23,6 +24,17 @@ const CustomSelectProps = props => {
         e.stopPropagation();
     };
 }
+
+const customStyles={
+    control: base=>({
+        ...base,
+        height: '5vh'
+    }),
+    valueContainer: base=>({
+        ...base,
+        height: '5vh'
+    })
+};
 
 
 function Post(title_temp, content_temp, importance_temp, due_temp) {
@@ -49,11 +61,12 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
             onUpdateNote({
                 ...activeNote,
                 [field]: value,
-                lastModified: Date.now(),
+                lastModified: value,
             });
         };
 
     const [selectedValue, setSelectedValue] = useState(0);
+    const [startDate, setStartDate] = useState(new Date());
 
     const handleChange = e => {
         setSelectedValue(e.value)
@@ -80,14 +93,22 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                     />
                     <Select
                         {...CustomSelectProps}
+                        className="app-main-note-edit-dropdown-importance"
+                        styles={customStyles}
                         id="importance"
                         //value={activeNote.importance.value}
                         options={importance}
                         defaultValue={importance[0]}
                         onChange={handleChange}
+
+                    />
+                    <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        styles={customStyles}
                     />
                     <button
-                        onClick={(e) => Post(activeNote.title, activeNote.content, selectedValue, activeNote.due)}>Submit
+                        onClick={(e) => Post(activeNote.title, activeNote.content, selectedValue, startDate)}>Submit
                     </button>
                 </div>
                 <div className="app-main-note-preview">

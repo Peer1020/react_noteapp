@@ -97,7 +97,7 @@ button:hover {
 
 .no-active-note {
   width: 70%;
-  height: 100vh;
+  height: 80vh;
   line-height: 100vh;
   text-align: center;
   font-size: 2rem;
@@ -115,7 +115,7 @@ textarea {
   border: 1px solid #ddd;
   margin-bottom: 20px;
   width: 100%;
-  height: calc(50vh - 130px);
+  height: calc(50vh - 150px);
   padding: 10px;
   resize: none;
   font-size: inherit;
@@ -148,6 +148,6 @@ textarea {
   width: 100%;
   color: black;
   background-color: white;
-  margin-bottom: 10px;
-  height: 3vh;
+  margin-bottom: 50px;
+  height: 5px;
 }
