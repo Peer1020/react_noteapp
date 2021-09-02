@@ -74,7 +74,7 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                     <Select
                         {...CustomSelectProps}
                         id="importance"
-                        value={activeNote.importance= importance.map=>(importance.value)}
+                        value={activeNote.importance.value}
                         options={importance}
                         defaultValue={importance[0]}
                     />
