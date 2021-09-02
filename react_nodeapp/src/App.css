@@ -92,7 +92,7 @@ button:hover {
 }
 .app-main-note-edit,
 .app-main-note-preview {
-  height: 50vh;
+  height: 70vh;
 }
 
 .no-active-note {
@@ -142,4 +142,12 @@ textarea {
   padding: 0 25px 25px 25px;
   font-size: 1rem;
   line-height: 2rem;
+}
+
+.app-main-note-edit-dropdown-importance{
+  width: 100%;
+  color: black;
+  background-color: white;
+  margin-bottom: 10px;
+  height: 3vh;
 }
