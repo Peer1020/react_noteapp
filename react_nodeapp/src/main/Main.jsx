@@ -13,6 +13,7 @@ const importance = [
 ];
 
 
+
 const CustomSelectProps = props => {
     const [clickCount, setClickCount] = useState(0);
 
@@ -52,6 +53,12 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
             });
         };
 
+    const [selectedValue, setSelectedValue] = useState(0);
+
+    const handleChange = e => {
+        setSelectedValue(e.value)
+    };
+
         if (!activeNote) return <div className="no-active-note">No Active Note</div>;
 
         return (
@@ -74,12 +81,13 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                     <Select
                         {...CustomSelectProps}
                         id="importance"
-                        value={activeNote.importance.value}
+                        //value={activeNote.importance.value}
                         options={importance}
                         defaultValue={importance[0]}
+                        onChange={handleChange}
                     />
                     <button
-                        onClick={(e) => Post(activeNote.title, activeNote.content, activeNote.importance, activeNote.due)}>Submit
+                        onClick={(e) => Post(activeNote.title, activeNote.content, selectedValue, activeNote.due)}>Submit
                     </button>
                 </div>
                 <div className="app-main-note-preview">
