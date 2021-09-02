@@ -36,6 +36,17 @@ const customStyles={
     })
 };
 
+const customStylesDatepicker={
+    control: base=>({
+        ...base,
+        height: '5vh'
+    }),
+        input: base=>({
+        ...base,
+        height: '5px'
+    })
+};
+
 
 function Post(title_temp, content_temp, importance_temp, due_temp) {
 
@@ -61,7 +72,7 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
             onUpdateNote({
                 ...activeNote,
                 [field]: value,
-                lastModified: value,
+                due: value,
             });
         };
 
@@ -96,16 +107,15 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"
-                        //value={activeNote.importance.value}
                         options={importance}
                         defaultValue={importance[0]}
                         onChange={handleChange}
-
                     />
                     <DatePicker
+                        id="due"
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
-                        styles={customStyles}
+                        styles={customStylesDatepicker}
                     />
                     <button
                         onClick={(e) => Post(activeNote.title, activeNote.content, selectedValue, startDate)}>Submit

@@ -1,5 +1,25 @@
 import {useEffect, useState} from "react";
 
+
+/*function Delete(id) {
+
+    let response = fetch("/notes/"+id, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title: title_temp,
+            content: content_temp,
+            importance: importance_temp,
+            due: due_temp,
+        }),
+    }).then((response) => {
+        console.log(response);
+    });
+}
+*/
+
 function Call() {
     const [data, setData] = useState([]);
 
@@ -51,13 +71,12 @@ const Sidebar = ({
                 <button onClick={onAddNote}>By importance</button>
             </div>
             <div className="app-sidebar-notes">
-                {sortedNotes.map(({id, title, content,importance, due, finished}, i) => (
+                {sortedNotes.map(({id, title, content, importance, due, finished}, i) => (
                     <div
                         className={`app-sidebar-note ${id === activeNote && "active"}`}
                         onClick={() => setActiveNote(id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
-                            <button onClick={(e) => onDeleteNote(id)}>Delete</button>
                             <button onClick={(e) => onDeleteNote(id)}>Edit</button>
                         </div>
 
