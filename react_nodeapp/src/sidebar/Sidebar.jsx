@@ -1,83 +1,55 @@
 import {useEffect, useState} from "react";
 
-
-/*function Delete(id) {
-
-    let response = fetch("/notes/"+id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            title: title_temp,
-            content: content_temp,
-            importance: importance_temp,
-            due: due_temp,
-        }),
-    }).then((response) => {
-        console.log(response);
-    });
-}
-*/
-
-function Call() {
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        callBackendAPI();
-    }, []);
-
-// fetching the GET route from the Express server which matches the GET route from server.js
-    const callBackendAPI = async () => {
-        const response = await fetch('/notes', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        ).then(function (response) {
-            console.log(response)
-            return response.json();
-        }).then(function (myJson) {
-            console.log(myJson)
-            setData(myJson);
-        });
-
-    }
-    return data
-}
-
-
 const Sidebar = ({
-                     notes,
+                    notes,
                      onAddNote,
-                     onDeleteNote,
+                     onUpdateNote,
                      activeNote,
                      setActiveNote,
+                     sortedDueNotes
                  }) => {
 
-    //  const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified);
-    notes = Call();
-    const sortedNotes = notes;
+    const [notes2, setNotes2] = useState([]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch('/notes');
+            const json = await response.json();
+            setNotes2(json);
+        }
+        fetchData();
+
+    }, [setNotes2]);
+
+    
+    function sortByCreatedDate() {
+        setNotes2([...notes2].sort((a,b) => a._id.localeCompare(b._id)))
+    }
+
+    function sortByDate() {
+        setNotes2([...notes2].sort((a,b) => Date.parse(b.due) - Date.parse(a.due)))
+    }
+
+    function sortByImportance() {
+        setNotes2([...notes2].sort((a,b) => b.importance - a.importance))
+    }
 
     return (
         <div className="app-sidebar">
             <div className="app-sidebar-header">
                 <h1>Notes</h1>
                 <button onClick={onAddNote}>Add</button>
-                <button onClick={onAddNote}>By finished Date</button>
-                <button onClick={onAddNote}>By created Date</button>
-                <button onClick={onAddNote}>By importance</button>
+                <button onClick={sortByCreatedDate}>Sort Created Date</button>
+                <button onClick={sortByDate}>Sort By Due Date</button>
+                <button onClick={sortByImportance}> Sort By Importance</button>
             </div>
             <div className="app-sidebar-notes">
-                {sortedNotes.map(({id, title, content, importance, due, finished}, i) => (
-                    <div
-                        className={`app-sidebar-note ${id === activeNote && "active"}`}
-                        onClick={() => setActiveNote(id)}>
+                {notes2.map(({_id, title, content, importance,due, finished}, i) => (
+                    <div className={`app-sidebar-note ${_id === activeNote && "active"}`}
+                        onClick={() => setActiveNote(_id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
-                            <button onClick={(e) => onDeleteNote(id)}>Edit</button>
+                            <button onClick={(e) => onUpdateNote(_id)}>Edit</button>
                         </div>
 
                         <p>{content && content.substr(0, 100) + "..."}</p>
