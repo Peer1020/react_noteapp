@@ -9,6 +9,7 @@ import Home from './home/Home'
 import Editnote from './edit/Editnote';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Drawer} from "@material-ui/core";
+import Routes from "./Routes";
 
 const Stack = createNativeStackNavigator();
 
@@ -88,7 +89,6 @@ function App() {
 
         return (
             <div className="App">
-                <NavigationContainer>
                 <Sidebar
                     notes={notes}
                     onAddNote={onAddNote}
@@ -98,36 +98,8 @@ function App() {
                     sortedDueNotes={sortedDueNotes}
                 />
                 <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote}/>
-                    <Stack.Navigator>
-                        <Stack.Screen name="Editnote" component={Editnote}/>
-                    </Stack.Navigator>
-                </NavigationContainer>
+                <Routes />
             </div>
         );
 }
-
-{/*
-function App() {
-
-        return (
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="Home" component={Home}/>
-                    <Stack.Screen name="Editnote" component={Editnote}/>
-
-                    {/*    <div className="App">
-                    <Sidebar
-                        notes={notes}
-                        onAddNote={onAddNote}
-                        onDeleteNote={onDeleteNote}
-                        activeNote={activeNote}
-                        setActiveNote={setActiveNote}
-                    />
-                    <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote}/>
-                </div>
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
-}
-*/}
 export default App;

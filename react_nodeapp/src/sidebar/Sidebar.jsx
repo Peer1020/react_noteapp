@@ -1,4 +1,5 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import history from '../history';
 
 const Sidebar = ({
                     notes,
@@ -21,7 +22,7 @@ const Sidebar = ({
 
     }, [setNotes2]);
 
-    
+
     function sortByCreatedDate() {
         setNotes2([...notes2].sort((a,b) => a._id.localeCompare(b._id)))
     }
@@ -49,7 +50,7 @@ const Sidebar = ({
                         onClick={() => setActiveNote(_id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
-                            <button onClick={(e) => onUpdateNote(_id)}>Edit</button>
+                            <button onClick={()=>history.push("/Editnote")}>Edit</button>
                         </div>
 
                         <p>{content && content.substr(0, 100) + "..."}</p>

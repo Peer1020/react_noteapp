@@ -4,6 +4,7 @@ import Select, {components} from "react-select";
 import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Checkbox from '@material-ui/core/Checkbox';
 
 const importance = [
     {value: '', label: 'Select importance',},
