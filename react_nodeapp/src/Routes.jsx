@@ -12,9 +12,9 @@ export default class Routes extends Component {
         return (
             <Router history={history}>
                 <Switch>
-                    {/*<Route path="/" exact component={Main} />
-                    <Route path="/" component={Sidebar} />*/}
-                    <Route path="/Editnote" component={Editnote} />
+                    <Route path="/" component={Main} />
+                    <Route path="/" component={Sidebar} />
+                    <Route path="/notes/:id" component={Editnote} />
                 </Switch>
             </Router>
         )
