@@ -135,12 +135,12 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
                         styles={customStyles}
                         id="importance"
                         options={importance}
-                        defaultValue={importance[0]}
+                        getValue={notes3.importance.label}
                         onChange={handleChange}
                     />
                     <DatePicker
                         id="due"
-                        selected={startDate}
+                        value={notes3.due}
                         onChange={(date) => setStartDate(date)}
                         styles={customStylesDatepicker}
                     />

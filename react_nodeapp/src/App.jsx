@@ -78,7 +78,7 @@ function App() {
         const onAddNote = () => {
 
                 const newNote = {
-                    id: uuid(),
+                    _id: uuid(),
                     title: "Untitled Note",
                     content: "",
                     importance: "",
@@ -88,7 +88,7 @@ function App() {
 
             {
                 setNotes([newNote, ...notes]);
-            }                setActiveNote(newNote.id);
+            }                setActiveNote(newNote._id);
             };
 
 
