@@ -38,10 +38,16 @@ function App() {
 
         useEffect(() => fetchData(), []);
 
-        /*test
+        /*test*/
 
-        const fetchSingleData = (_id) => {
-            return fetch('/notes/'+_id, {
+    const [singleNote, setSingleNote] =
+        useState(localStorage.singleNote
+            ? JSON.parse(localStorage.singleNote) : []
+        );
+
+
+        const fetchSingleData = () => {
+            return fetch('/notes/'+singleNote.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
@@ -52,25 +58,17 @@ function App() {
                 return response.json();
             }).then(function (myJson) {
                 console.log(myJson)
-                setNotes(myJson);
+                setSingleNote(myJson);
             });
         }
 
         useEffect(() => fetchSingleData(), []);
 
 
-
-
-       test meeting   */
-
-
-
-
-
+     /*  test   */
 
         const [activeNote, setActiveNote] =
                 useState(-1);
-
 
         const sortedDueNotes = () => {
             console.log(notes.sort((a, b) => b.due - a.due));
@@ -95,7 +93,7 @@ function App() {
 
 
         /* test */
-        const onEditNote = () => {
+        const onEditNote = (i) => {
 
                 const EditNote = {
                     id: uuid(),
@@ -107,11 +105,9 @@ function App() {
                 };
 
             {
-                setNotes([EditNote, ...notes]);
-            }                setActiveNote(EditNote.id);
+                setSingleNote([EditNote[i], ...singleNote]);
+            }                setActiveNote(EditNote[i]);
             };
-
-
 
 
 
@@ -132,7 +128,8 @@ function App() {
             };
 
         const getActiveNote = () => {
-                return notes.find(({id}) => id === activeNote);
+                console.log(notes.find(({_id}) => _id === activeNote));
+                return notes.find(({_id}) => _id === activeNote);
             };
 
         return (
@@ -146,18 +143,20 @@ function App() {
                                 activeNote={activeNote}
                                 setActiveNote={setActiveNote}
                                 sortedDueNotes={sortedDueNotes}
-                                onEditNote={onAddNote}
+                                onEditNote={onEditNote}
                             />
                             <Main
-                                activeNote={getActiveNote()} onUpdateNote={onUpdateNote}
-                            />
-                        </Route>
-                    {/*         <Route path="/notes/:id" components={notes}>
-                            <Editnote
                                 activeNote={getActiveNote()}
                                 onUpdateNote={onUpdateNote}
                             />
-                        </Route>*/}
+                        </Route>
+                             <Route path="/notes/">
+                            <Editnote
+                                activeNote={getActiveNote()}
+                                onUpdateNote={onUpdateNote}
+                                onEditNote={onEditNote}
+                            />
+                        </Route>
                 </div>
             </BrowserRouter>
 

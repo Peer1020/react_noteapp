@@ -69,27 +69,30 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp) {
 }
 
 
-const Editnote = ({activeNote, onUpdateNote}) => {
+const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
 
         const onEditField = (field, value) => {
             onUpdateNote({
-                ...activeNote,
+                ...onEditNote,
                 [field]: value,
                 due: value,
             });
         };
 
-        const [notes3, setNotes3] = useState([]);
+        const [notes3, setNotes3] = useState([props]);
 
         useEffect(() => {
             const fetchSingleData = async () => {
-                const response = await fetch('/notes/',notes3._id);
+                const response = await fetch('/notes/'+notes3._id);
                 const json = await response.json();
                 setNotes3(json);
             }
-            fetchSingleData(notes3._id);
+            fetchSingleData();
 
         }, [setNotes3]);
+
+
+
 
 
         const [selectedValue, setSelectedValue] = useState(0);
@@ -109,24 +112,21 @@ const Editnote = ({activeNote, onUpdateNote}) => {
         };
 
 
-        if (!activeNote) return <div className="no-active-note">No Active Note</div>;
-
         return (
             <div className="app-main">
                 <div className="app-main-note-edit">
-                    <strong>{notes3.title}</strong>
                     <input
                         type="text"
                         id="title"
                         placeholder="Note Title"
-                        value={activeNote.title}
+                        value={notes3.title}
                         onChange={(e) => onEditField("title", e.target.value)}
                         autoFocus
                     />
                     <textarea
                         id="content"
                         placeholder="Write your note here..."
-                        value={activeNote.content}
+                        value={notes3.content}
                         onChange={(e) => onEditField("content", e.target.value)}
                     />
                     <Select
@@ -150,13 +150,13 @@ const Editnote = ({activeNote, onUpdateNote}) => {
                         onChange={handleCheckbox}
                     />
                     <button
-                        onClick={(e) => Update(activeNote._id, activeNote.title, activeNote.content, selectedValue, startDate)}>Submit
+                        onClick={(e) => Update(notes3._id, notes3.title, notes3.content, selectedValue, startDate)}>Submit
                     </button>
                 </div>
                 <div className="app-main-note-preview">
-                    <h1 className="preview-title">{activeNote.title}</h1>
+                    <h1 className="preview-title">{notes3.title}</h1>
                     <ReactMarkdown className="markdown-preview">
-                        {activeNote.content}
+                        {notes3.content}
                     </ReactMarkdown>
                 </div>
             </div>
