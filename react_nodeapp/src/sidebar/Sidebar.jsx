@@ -52,7 +52,7 @@ const Sidebar = ({
                     onClick={()=>setActiveNote(_id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
-                            <button onClick={(e)=>onEditNote}>Edit</button>
+                            <button onClick={onEditNote}>Edit</button>
                         </div>
                         <p>{content && content.substr(0, 100) + "..."}</p>
                         <p>{importance}</p>

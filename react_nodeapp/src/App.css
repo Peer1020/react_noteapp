@@ -35,10 +35,19 @@ button:hover {
   display: flex;
 }
 
+@media (max-width: 500px) {
+  .App{
+    display: flex;
+    flex: 50%;
+    flex-direction: column;
+  }
+  }
+
+
 /* SIDEBAR STYLES */
 
 .app-sidebar {
-  width: 100%;
+  width: 90%;
   height: 100vh;
   border-right: 1px solid #ddd;
 }

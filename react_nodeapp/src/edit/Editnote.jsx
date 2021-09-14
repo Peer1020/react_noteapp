@@ -95,7 +95,8 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
 
 
 
-        const [selectedValue, setSelectedValue] = useState(0);
+        const [selectedValue, setSelectedValue] = useState(notes3.importance);
+        console.log(selectedValue);
         const [startDate, setStartDate] = useState(new Date());
 
         const handleChange = e => {
@@ -135,12 +136,12 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
                         styles={customStyles}
                         id="importance"
                         options={importance}
-                        getValue={notes3.importance.label}
+                        value={importance.label}
                         onChange={handleChange}
                     />
                     <DatePicker
                         id="due"
-                        value={notes3.due}
+                        defaultValue={notes3.due}
                         onChange={(date) => setStartDate(date)}
                         styles={customStylesDatepicker}
                     />
@@ -150,7 +151,7 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
                         onChange={handleCheckbox}
                     />
                     <button
-                        onClick={(e) => Update(notes3._id, notes3.title, notes3.content, selectedValue, startDate)}>Submit
+                        onClick={(e) => Update(notes3.title, notes3.content, selectedValue, startDate)}>Update
                     </button>
                 </div>
                 <div className="app-main-note-preview">
