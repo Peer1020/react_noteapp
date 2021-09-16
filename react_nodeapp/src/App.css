@@ -35,21 +35,21 @@ button:hover {
   display: flex;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .App{
     display: flex;
-    flex: 50%;
     flex-direction: column;
+    overflow-y: scroll
   }
   }
-
 
 /* SIDEBAR STYLES */
 
 .app-sidebar {
-  width: 90%;
+  width: 100%;
   height: 100vh;
   border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .app-sidebar-header {
@@ -62,7 +62,7 @@ button:hover {
 }
 
 .app-sidebar-notes {
-  height: calc(100vh - 78px);
+  height: calc(100vh - 110px);
   overflow-y: scroll;
 }
 .app-sidebar-note {
@@ -96,7 +96,7 @@ button:hover {
 /* NOTE EDITOR/PREVIEW (MAIN) STYLES */
 
 .app-main {
-  width: 70%;
+  width: 100%;
   height: 100vh;
 }
 
