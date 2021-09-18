@@ -39,7 +39,7 @@ const customStyles = {
 };
 
 const customStylesDatepicker = {
-    control: base => ({
+    FormControlLabel: base => ({
         ...base,
         height: '5vh'
     }),
