@@ -19,11 +19,6 @@ function App() {
         useState( []
         );
 
-  /*  const [notes, setNotes] =
-        useState(localStorage.notes
-            ? JSON.parse(localStorage.notes) : []
-        );*/
-
     const fetchData = () => {
         return fetch('/notes', {
                 headers: {

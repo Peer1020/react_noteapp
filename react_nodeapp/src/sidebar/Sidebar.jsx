@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
 import history from '../history';
 import {CheckBox} from "react-native-web";
-import {FormControlLabel, makeStyles, Typography} from "@material-ui/core";
+import {FormControlLabel, makeStyles} from "@material-ui/core";
 
 const filterStyles =makeStyles(theme => ({
     root:{
@@ -25,17 +25,22 @@ const Sidebar = ({
                      getActiveNote
                  }) => {
 
-        const [notes2, setNotes2] = useState([]);
+        const storedData=JSON.parse(localStorage.getItem("sort"));
+         const [notes2, setNotes2] = useState(storedData);
 
         useEffect(() => {
-            const fetchData = async () => {
-                const response = await fetch('/notes');
-                const json = await response.json();
-                setNotes2(json);
+            if(storedData.length===0) {
+                const fetchData = async () => {
+                    const response = await fetch('/notes');
+                    const json = await response.json();
+                    setNotes2(json);
+                }
+                fetchData();
+            } else{
+                setNotes2(storedData);
             }
-            fetchData();
-
-        }, [setNotes2]);
+        },
+            [setNotes2]);
 
 
         function sortByCreatedDate() {
@@ -46,10 +51,12 @@ const Sidebar = ({
             setNotes2([...notes2].sort((a, b) => Date.parse(b.due) - Date.parse(a.due)))
         }
 
+
         function sortByImportance() {
             setNotes2([...notes2].sort((a, b) => b.importance - a.importance))
         }
 
+        localStorage.setItem("sort", JSON.stringify(notes2));
 
         const [stateFinished, setStateFinished] = useState(false);
         const label = {inputProps: {'arial-label': 'Checkbox'}};
