@@ -25,19 +25,28 @@ const Sidebar = ({
                      getActiveNote
                  }) => {
 
-        const storedData=JSON.parse(localStorage.getItem("sort"));
-         const [notes2, setNotes2] = useState(storedData);
+        const storedDataTemp = () => {
+            const temp=localStorage.getItem("sort")
+            if (temp === "null") {
+                localStorage.setItem("sort",[]);
+                return []
+            } else {
+                return JSON.parse(localStorage.getItem("sort"));
+            }
+        };
+
+        const storedData=storedDataTemp();
+
+        const [notes2, setNotes2] = useState(storedData);
 
         useEffect(() => {
-            if(storedData.length===0) {
+            if(notes2.length === 0) {
                 const fetchData = async () => {
                     const response = await fetch('/notes');
                     const json = await response.json();
                     setNotes2(json);
                 }
                 fetchData();
-            } else{
-                setNotes2(storedData);
             }
         },
             [setNotes2]);

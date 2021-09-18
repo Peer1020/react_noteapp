@@ -94,7 +94,7 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                         id="title"
                         placeholder="Note Title"
                         value={activeNote.title}
-                        onChange={(e) => onEditField("title", e.target.value)}
+                        required onChange={(e) => onEditField("title", e.target.value)}
                         autoFocus
                     />
                     <textarea
