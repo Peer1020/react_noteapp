@@ -6,7 +6,7 @@ import Main from './main/Main';
 import Sidebar from './sidebar/Sidebar';
 import Editnote from './edit/Editnote';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Drawer, Link, SwipeableDrawer, Switch} from "@material-ui/core";
+import {Switch} from "@material-ui/core";
 import Routes from "./Routes";
 import {BrowserRouter, Route, Router} from "react-router-dom";
 
@@ -65,6 +65,20 @@ function App() {
 
 
     /*  test   */
+
+    const Dark_Theme='dark_theme';
+    const [theme, setTheme] = useState( {darkTheme:false});
+    const label={inputProps: {'aria-lable':'Switch-Demo'}};
+    const { darkTheme } = theme;
+    let className ='App';
+    if (darkTheme) className+= Dark_Theme;
+
+    const SwitchTheme= ()=>{
+        setTheme((prevState)=>({
+            darkTheme: !prevState.darkTheme
+        }))
+    }
+
 
     const [activeNote, setActiveNote] =
         useState(-1);
@@ -132,15 +146,21 @@ function App() {
     };
 
     const getActiveNote = () => {
-        console.log(notes.find(({_id}) => _id === activeNote));
         return notes.find(({_id}) => _id === activeNote);
     };
 
     return (
         <BrowserRouter>
-            <div className="App">
-
+            <div
+                /*className="App">*/
+                className={className}>
+                <Switch
+                /*    className={className} */
+                    {...label}
+                    onChange={SwitchTheme}
+                />
                 <Sidebar
+                    className={className}
                     notes={notes}
                     onAddNote={onAddNote}
                     activeNote={getActiveNote()}
@@ -150,6 +170,7 @@ function App() {
                 />
                 <Route exact path="/">
                     <Main
+                        className={className}
                         activeNote={getActiveNote()}
                         onUpdateNote={onUpdateNote}
                     />
