@@ -5,6 +5,7 @@ import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@material-ui/core/Checkbox";
+import {useLocation, useParams} from "react-router";
 
 
 const importance = [
@@ -69,7 +70,7 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp) {
 }
 
 
-const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
+const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
 
         const onEditField = (field, value) => {
             onUpdateNote({
@@ -79,11 +80,13 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
             });
         };
 
-        const [notes3, setNotes3] = useState([props]);
+        const [notes3, setNotes3] = useState([]);
+        const location = useParams();
 
         useEffect(() => {
             const fetchSingleData = async () => {
-                const response = await fetch('/notes/'+notes3._id);
+                const response = await fetch('/notes/'+location.id);
+                console.log(response);
                 const json = await response.json();
                 setNotes3(json);
             }
@@ -96,7 +99,8 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
 
 
         const [selectedValue, setSelectedValue] = useState(notes3.importance);
-        console.log(selectedValue);
+        console.log(notes3.importance);
+        console.log(notes3.due);
         const [startDate, setStartDate] = useState(new Date());
 
         const handleChange = e => {
@@ -112,6 +116,23 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
             setFinishedState({...finishState, [event.target.name]: event.target.checked});
         };
 
+        function handleCheckboxCurrentState(){
+            if(notes3.finished===true){
+                return "true";}
+                else return "";
+            }
+
+            function handleDateConversion(){
+                const date=notes3.due;
+                console.log(date.toLocaleDateString(("en-GB", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })));
+                return date.toLocaleDateString(("en-GB", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }));
+            }
 
         return (
             <div className="app-main">
@@ -141,18 +162,23 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote,props}) => {
                     />
                     <DatePicker
                         id="due"
-                        defaultValue={notes3.due}
+                        selected={handleDateConversion()}
                         onChange={(date) => setStartDate(date)}
                         styles={customStylesDatepicker}
                     />
+                    <p>Finished
                     <Checkbox
+                        label="Finished"
                         id="finished"
-                        checked={finishState.checkedB}
+                        checked={handleCheckboxCurrentState()}
                         onChange={handleCheckbox}
                     />
+                    </p>
+                    <div>
                     <button
                         onClick={(e) => Update(notes3.title, notes3.content, selectedValue, startDate)}>Update
                     </button>
+                    </div>
                 </div>
                 <div className="app-main-note-preview">
                     <h1 className="preview-title">{notes3.title}</h1>

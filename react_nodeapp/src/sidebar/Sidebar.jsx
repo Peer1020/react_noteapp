@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import history from '../history';
 import {CheckBox} from "react-native-web";
 import {FormControlLabel, makeStyles} from "@material-ui/core";
+import page from 'page';
 
 const filterStyles =makeStyles(theme => ({
     root:{
@@ -84,7 +85,29 @@ const Sidebar = ({
         }
         const classes=filterStyles();
 
-        return (
+    const [currentView, setView] = useState('/');
+
+
+    function _navigateToUrl (notes1) {
+        history.push({
+            pathname: notes1
+        });
+        window.location.reload(true);
+        _initializeRoutes()
+    }
+
+   function _initializeRoutes() {
+        page('/', () => {
+            setView('/');
+        });
+        page('notes/_id', () => {
+            setView('edit');
+        });
+        page();
+    }
+
+
+    return (
             <div className="app-sidebar">
                 <div className="app-sidebar-header">
                     <h1>Notes</h1>
@@ -110,7 +133,7 @@ const Sidebar = ({
                              onClick={() => setActiveNote(_id)}>
                             <div className="sidebar-note-title">
                                 <strong>{title}</strong>
-                                <button onClick={onEditNote}>Edit</button>
+                                <button onClick={() => _navigateToUrl('notes/'+_id)}>Edit</button>
                             </div>
                             <p>{content && content.substr(0, 100) + "..."}</p>
                             <p>{importance}</p>

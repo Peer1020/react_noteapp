@@ -152,13 +152,12 @@ function App() {
     return (
         <BrowserRouter>
             <div
-                /*className="App">*/
                 className={className}>
                 <Switch
-                /*    className={className} */
                     {...label}
                     onChange={SwitchTheme}
                 />
+                <Route exact path="/">
                 <Sidebar
                     className={className}
                     notes={notes}
@@ -168,14 +167,13 @@ function App() {
                     sortedDueNotes={sortedDueNotes}
                     onEditNote={onEditNote}
                 />
-                <Route exact path="/">
                     <Main
                         className={className}
                         activeNote={getActiveNote()}
                         onUpdateNote={onUpdateNote}
                     />
                 </Route>
-                <Route path="/notes/">
+                <Route path="/notes/:id">
                     <Editnote
                         activeNote={getActiveNote()}
                         onEditNote={onEditNote}
