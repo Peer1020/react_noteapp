@@ -1,11 +1,11 @@
-import React, {Component, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import ReactMarkdown from "react-markdown";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@material-ui/core/Checkbox";
-import {useLocation, useParams} from "react-router";
+import {useParams} from "react-router";
 
 
 const importance = [
@@ -51,7 +51,7 @@ const customStylesDatepicker = {
 };
 
 
-function Update(id_temp, title_temp, content_temp, importance_temp, due_temp) {
+function Update(id_temp, title_temp, content_temp, importance_temp, due_temp,finished_temp) {
 
     let response = fetch("/notes/" + id_temp, {
         method: "PUT",
@@ -63,6 +63,7 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp) {
             content: content_temp,
             importance: importance_temp,
             due: due_temp,
+            finished: finished_temp
         }),
     }).then((response) => {
         console.log(response);
@@ -71,12 +72,10 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp) {
 
 
 const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
-
         const onEditField = (field, value) => {
             onUpdateNote({
-                ...onEditNote,
+                ...notes3,
                 [field]: value,
-                due: value,
             });
         };
 
@@ -94,14 +93,11 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
 
         }, [setNotes3]);
 
+        const [selectedValue, setSelectedValue] = useState(
+            0);
+        const [startDate, setStartDate] = useState(0);
 
 
-
-
-        const [selectedValue, setSelectedValue] = useState(notes3.importance);
-        console.log(notes3.importance);
-        console.log(notes3.due);
-        const [startDate, setStartDate] = useState(new Date());
 
         const handleChange = e => {
             setSelectedValue(e.value)
@@ -122,17 +118,16 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
                 else return "";
             }
 
-            function handleDateConversion(){
-                const date=notes3.due;
-                console.log(date.toLocaleDateString(("en-GB", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                })));
-                return date.toLocaleDateString(("en-GB", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }));
+            function handleDate(){
+            const date=Date.parse(notes3.due);
+            return date;
             }
+
+            function handleImportance(){
+            const key=notes3.importance;
+            return importance[key];
+            }
+
 
         return (
             <div className="app-main">
@@ -157,12 +152,12 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
                         styles={customStyles}
                         id="importance"
                         options={importance}
-                        value={importance.label}
+                        value={handleImportance()}
                         onChange={handleChange}
                     />
                     <DatePicker
                         id="due"
-                        selected={handleDateConversion()}
+                        selected={handleDate()}
                         onChange={(date) => setStartDate(date)}
                         styles={customStylesDatepicker}
                     />
@@ -176,7 +171,7 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
                     </p>
                     <div>
                     <button
-                        onClick={(e) => Update(notes3.title, notes3.content, selectedValue, startDate)}>Update
+                        onClick={(e) => Update(location.id,notes3.title, notes3.content, notes3.importance, notes3.due,notes3.finished)}>Update
                     </button>
                     </div>
                 </div>

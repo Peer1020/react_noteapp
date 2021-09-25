@@ -176,7 +176,7 @@ function App() {
                 <Route path="/notes/:id">
                     <Editnote
                         activeNote={getActiveNote()}
-                        onEditNote={onEditNote}
+                        onUpdateNote={onUpdateNote}
                     />
                 </Route>
             </div>

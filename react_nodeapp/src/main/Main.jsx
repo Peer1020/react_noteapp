@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactMarkdown from "react-markdown";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Checkbox from '@material-ui/core/Checkbox';
 
 const importance = [
     {value: '', label: 'Select importance',},
@@ -119,7 +118,7 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                         styles={customStylesDatepicker}
                     />
                     <button
-                        onClick={(e) => Post(activeNote.title, activeNote.content, selectedValue, startDate)}>Submit
+                        onClick={() => Post(activeNote.title, activeNote.content, selectedValue, startDate)}>Submit
                     </button>
                 </div>
                 <div className="app-main-note-preview">
