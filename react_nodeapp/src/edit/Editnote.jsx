@@ -6,9 +6,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@material-ui/core/Checkbox";
 import {useParams} from "react-router";
+import history from "../history";
 
 
-const importance = [
+const importance_array = [
     {value: '', label: 'Select importance',},
     {value: 1, label: 'Blocker'},
     {value: 2, label: 'Critical'},
@@ -51,7 +52,7 @@ const customStylesDatepicker = {
 };
 
 
-function Update(id_temp, title_temp, content_temp, importance_temp, due_temp,finished_temp) {
+function Update(id_temp, title_temp, content_temp, importance_temp, due_temp, finished_temp) {
 
     let response = fetch("/notes/" + id_temp, {
         method: "PUT",
@@ -68,23 +69,33 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp,fin
     }).then((response) => {
         console.log(response);
     });
+    _navigateToUrl('/')
+}
+
+function _navigateToUrl (notes) {
+    history.push({
+        pathname: notes
+    });
+    window.location.reload(true);
 }
 
 
 const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
-        const onEditField = (field, value) => {
-            onUpdateNote({
-                ...notes3,
-                [field]: value,
-            });
-        };
 
-        const [notes3, setNotes3] = useState([]);
+        const [notes3, setNotes3] = useState({
+            notes3: {
+                title: "",
+                content: "",
+                importance: "",
+                due: new Date(),
+                finished: ""
+            }
+        });
         const location = useParams();
 
         useEffect(() => {
             const fetchSingleData = async () => {
-                const response = await fetch('/notes/'+location.id);
+                const response = await fetch('/notes/' + location.id);
                 console.log(response);
                 const json = await response.json();
                 setNotes3(json);
@@ -93,41 +104,13 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
 
         }, [setNotes3]);
 
-        const [selectedValue, setSelectedValue] = useState(
-            0);
-        const [startDate, setStartDate] = useState(0);
-
-
-
-        const handleChange = e => {
-            setSelectedValue(e.value)
+        const onEditField = (field, value) => {
+            console.log(value);
+            setNotes3({
+                ...notes3,
+                [field]: value,
+            });
         };
-
-        const [finishState, setFinishedState] = React.useState({
-            checkedA: true,
-            checkedB: false,
-        });
-
-        const handleCheckbox = (event) => {
-            setFinishedState({...finishState, [event.target.name]: event.target.checked});
-        };
-
-        function handleCheckboxCurrentState(){
-            if(notes3.finished===true){
-                return "true";}
-                else return "";
-            }
-
-            function handleDate(){
-            const date=Date.parse(notes3.due);
-            return date;
-            }
-
-            function handleImportance(){
-            const key=notes3.importance;
-            return importance[key];
-            }
-
 
         return (
             <div className="app-main">
@@ -136,8 +119,8 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
                         type="text"
                         id="title"
                         placeholder="Note Title"
-                        value={notes3.title}
                         onChange={(e) => onEditField("title", e.target.value)}
+                        value={notes3.title}
                         autoFocus
                     />
                     <textarea
@@ -151,28 +134,31 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"
-                        options={importance}
-                        value={handleImportance()}
-                        onChange={handleChange}
+                        options={importance_array}
+                        value={(importance_array[notes3.importance])}
+                        onChange={(e) => onEditField("importance", e.value)}
                     />
                     <DatePicker
                         id="due"
-                        selected={handleDate()}
-                        onChange={(date) => setStartDate(date)}
+                        selected={Date.parse(notes3.due)}
+                        onChange={(e) => onEditField("due", new Date(e))}
                         styles={customStylesDatepicker}
                     />
                     <p>Finished
-                    <Checkbox
-                        label="Finished"
-                        id="finished"
-                        checked={handleCheckboxCurrentState()}
-                        onChange={handleCheckbox}
-                    />
+                        <Checkbox
+                            label="Finished"
+                            id="finished"
+                            checked={(notes3.finished === true) ? "true": ""}
+                            onChange={(e) => onEditField("finished", e.target.checked)}
+                        />
                     </p>
                     <div>
-                    <button
-                        onClick={(e) => Update(location.id,notes3.title, notes3.content, notes3.importance, notes3.due,notes3.finished)}>Update
-                    </button>
+                        <button
+                            onClick={(e) => Update(location.id, notes3.title, notes3.content, notes3.importance, notes3.due, notes3.finished)}>Update
+                        </button>
+                        <button
+                            onClick={() =>_navigateToUrl('/')}>Cancel
+                        </button>
                     </div>
                 </div>
                 <div className="app-main-note-preview">

@@ -1,16 +1,11 @@
-import React, {Component, useEffect, useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import uuid from "react-uuid";
 import './App.css';
 import Main from './main/Main';
 import Sidebar from './sidebar/Sidebar';
 import Editnote from './edit/Editnote';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Switch} from "@material-ui/core";
-import Routes from "./Routes";
-import {BrowserRouter, Route, Router} from "react-router-dom";
-
-const Stack = createNativeStackNavigator();
+import {BrowserRouter, Route} from "react-router-dom";
 
 
 function App() {
@@ -68,7 +63,7 @@ function App() {
 
     const Dark_Theme='dark_theme';
     const [theme, setTheme] = useState( {darkTheme:false});
-    const label={inputProps: {'aria-lable':'Switch-Demo'}};
+    const label={inputProps: {'aria-label':'Switch-Demo'}};
     const { darkTheme } = theme;
     let className ='App';
     if (darkTheme) className+= Dark_Theme;
@@ -177,6 +172,7 @@ function App() {
                     <Editnote
                         activeNote={getActiveNote()}
                         onUpdateNote={onUpdateNote}
+                        onEditNote={onEditNote}
                     />
                 </Route>
             </div>
