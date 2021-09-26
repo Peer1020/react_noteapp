@@ -7,11 +7,10 @@ import Editnote from './edit/Editnote';
 import {Switch} from "@material-ui/core";
 import {BrowserRouter, Route} from "react-router-dom";
 
-
 function App() {
 
     const [notes, setNotes] =
-        useState( []
+        useState([]
         );
 
     const fetchData = () => {
@@ -32,56 +31,21 @@ function App() {
 
     useEffect(() => fetchData(), []);
 
-    /*test*/
+    const Dark_Theme = 'dark_theme';
+    const [theme, setTheme] = useState({darkTheme: false});
+    const label = {inputProps: {'aria-label': 'Switch-Demo'}};
+    const {darkTheme} = theme;
+    let className = 'App';
+    if (darkTheme) className += Dark_Theme;
 
-    const [singleNote, setSingleNote] =
-        useState(localStorage.singleNote
-            ? JSON.parse(localStorage.singleNote) : []
-        );
-
-
-    const fetchSingleData = () => {
-        return fetch('/notes/' + singleNote.id, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        ).then(function (response) {
-            console.log(response)
-            return response.json();
-        }).then(function (myJson) {
-            console.log(myJson)
-            setSingleNote(myJson);
-        });
-    }
-
-    useEffect(() => fetchSingleData(), []);
-
-
-    /*  test   */
-
-    const Dark_Theme='dark_theme';
-    const [theme, setTheme] = useState( {darkTheme:false});
-    const label={inputProps: {'aria-label':'Switch-Demo'}};
-    const { darkTheme } = theme;
-    let className ='App';
-    if (darkTheme) className+= Dark_Theme;
-
-    const SwitchTheme= ()=>{
-        setTheme((prevState)=>({
+    const SwitchTheme = () => {
+        setTheme((prevState) => ({
             darkTheme: !prevState.darkTheme
         }))
     }
 
-
     const [activeNote, setActiveNote] =
         useState(-1);
-
-    const sortedDueNotes = () => {
-        console.log(notes.sort((a, b) => b.due - a.due));
-        return notes.sort((a, b) => b.due - a.due);
-    };
 
     const onAddNote = () => {
 
@@ -100,11 +64,7 @@ function App() {
         setActiveNote(newNote._id);
     };
 
-
-    /* test */
     const onEditNote = () => {
-
-        console.log("edit note pressed")
 
         const EditNote = {
             _id: uuid(),
@@ -117,16 +77,12 @@ function App() {
 
 
         {
-            // setSingleNote([getActiveNote(), ...singleNote]);
+
         }
         setActiveNote(getActiveNote());
 
     };
 
-
-    const onDeleteNote = (noteId) => {
-        setNotes(notes.filter(({id}) => id !== noteId));
-    };
 
     const onUpdateNote = (updatedNote) => {
         const updatedNotesArr = notes.map((note) => {
@@ -153,15 +109,14 @@ function App() {
                     onChange={SwitchTheme}
                 />
                 <Route exact path="/">
-                <Sidebar
-                    className={className}
-                    notes={notes}
-                    onAddNote={onAddNote}
-                    activeNote={getActiveNote()}
-                    setActiveNote={setActiveNote}
-                    sortedDueNotes={sortedDueNotes}
-                    onEditNote={onEditNote}
-                />
+                    <Sidebar
+                        className={className}
+                        notes={notes}
+                        onAddNote={onAddNote}
+                        activeNote={getActiveNote()}
+                        setActiveNote={setActiveNote}
+                        onEditNote={onEditNote}
+                    />
                     <Main
                         className={className}
                         activeNote={getActiveNote()}

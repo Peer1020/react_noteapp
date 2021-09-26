@@ -5,7 +5,7 @@ import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const importance = [
+const importance_array = [
     {value: '', label: 'Select importance',},
     {value: 1, label: 'Blocker'},
     {value: 2, label: 'Critical'},
@@ -107,8 +107,8 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"
-                        options={importance}
-                        defaultValue={importance[0]}
+                        options={importance_array}
+                        defaultValue={importance_array[0]}
                         onChange={handleChange}
                     />
                     <DatePicker
@@ -131,6 +131,4 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
         );
     }
 ;
-
-
 export default Main;

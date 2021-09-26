@@ -80,7 +80,7 @@ function _navigateToUrl (notes) {
 }
 
 
-const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
+const Editnote = () => {
 
         const [notes3, setNotes3] = useState({
             notes3: {
@@ -171,5 +171,4 @@ const Editnote = ({activeNote, onEditNote, onUpdateNote}) => {
         );
     }
 ;
-
 export default Editnote;
