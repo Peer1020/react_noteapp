@@ -75,6 +75,7 @@ button:hover {
 }
 .app-sidebar-note button {
   color: crimson;
+  font-weight: bold;
 }
 .app-sidebar-note p {
   margin: 10px 0;
@@ -134,6 +135,11 @@ textarea {
 .app-main-note-edit input {
   height: 50px;
   font-size: 2rem;
+}
+
+.app-main-note-error{
+  color: crimson;
+  font-weight: bold;
 }
 
 /* Preview */

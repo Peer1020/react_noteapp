@@ -18,17 +18,6 @@ const importance_array = [
     {value: 5, label: 'Trivial'},
 ];
 
-
-const CustomSelectProps = props => {
-    const [clickCount, setClickCount] = useState(0);
-
-    const onClick = e => {
-        setClickCount(clickCount + 1);
-        e.preventDefault();
-        e.stopPropagation();
-    };
-}
-
 const customStyles = {
     control: base => ({
         ...base,
@@ -130,7 +119,6 @@ const Editnote = () => {
                         onChange={(e) => onEditField("content", e.target.value)}
                     />
                     <Select
-                        {...CustomSelectProps}
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"

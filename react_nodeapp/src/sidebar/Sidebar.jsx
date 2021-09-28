@@ -17,6 +17,7 @@ const filterStyles = makeStyles(theme => ({
 const Sidebar = ({
                      onAddNote,
                      activeNote,
+                    setActiveNote
                  }) => {
 
     const storedDataTemp = () => {
@@ -108,7 +109,8 @@ const Sidebar = ({
             />
             <div className="app-sidebar-notes">
                 {notes2.map(({_id, title, content, importance, due, finished}, i) => (
-                    <div className={`app-sidebar-note ${_id === activeNote && "active"}`}>
+                    <div className={`app-sidebar-note ${_id === activeNote && "active"}`}
+                         onClick={() => setActiveNote(_id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
                             <button onClick={() => _navigateToUrl('notes/' + _id)}>Edit</button>

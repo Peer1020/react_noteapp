@@ -74,13 +74,7 @@ function App() {
             due: Date.now(),
             finished: "finished"
         };
-
-
-        {
-
-        }
         setActiveNote(getActiveNote());
-
     };
 
 
@@ -134,5 +128,4 @@ function App() {
         </BrowserRouter>
     );
 }
-
 export default App;

@@ -14,17 +14,6 @@ const importance_array = [
     {value: 5, label: 'Trivial'},
 ];
 
-
-const CustomSelectProps = props => {
-    const [clickCount, setClickCount] = useState(0);
-
-    const onClick = e => {
-        setClickCount(clickCount + 1);
-        e.preventDefault();
-        e.stopPropagation();
-    };
-}
-
 const customStyles={
     control: base=>({
         ...base,
@@ -67,14 +56,27 @@ function Post(title_temp, content_temp, importance_temp, due_temp) {
 }
 
 
-const Main = ({activeNote, onUpdateNote, onAddNote}) => {
+const Main = ({activeNote, onUpdateNote}) => {
+
+    const [state, setState] = useState(null);
+
         const onEditField = (field, value) => {
             onUpdateNote({
                 ...activeNote,
                 [field]: value,
-                due: value,
             });
+            validateForm(field,value);
         };
+
+    function validateForm(field, value) {
+        const target=value.target;
+        let error='';
+        if(!value){
+            setState("Title field cannot be empty");
+        } else{
+            setState(null);
+        }
+    }
 
     const [selectedValue, setSelectedValue] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
@@ -88,14 +90,16 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
         return (
             <div className="app-main">
                 <div className="app-main-note-edit">
+                    <form>
                     <input
                         type="text"
                         id="title"
                         placeholder="Note Title"
                         value={activeNote.title}
                         onChange={(e) => onEditField("title", e.target.value)}
-                        autoFocus
                     />
+                        {state && <p className="app-main-note-error">{state}</p> }
+                    </form>
                     <textarea
                         id="content"
                         placeholder="Write your note here..."
@@ -103,7 +107,7 @@ const Main = ({activeNote, onUpdateNote, onAddNote}) => {
                         onChange={(e) => onEditField("content", e.target.value)}
                     />
                     <Select
-                        {...CustomSelectProps}
+               //         {...CustomSelectProps}
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"
