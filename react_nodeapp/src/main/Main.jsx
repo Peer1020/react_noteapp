@@ -1,18 +1,9 @@
 import React from 'react';
-import ReactMarkdown from "react-markdown";
 import Select from "react-select";
 import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-const importance_array = [
-    {value: '', label: 'Select importance',},
-    {value: 1, label: 'Blocker'},
-    {value: 2, label: 'Critical'},
-    {value: 3, label: 'Major'},
-    {value: 4, label: 'Minor'},
-    {value: 5, label: 'Trivial'},
-];
+import importance_array from '../utils/array_importance';
 
 const customStyles={
     control: base=>({
@@ -52,6 +43,7 @@ function Post(title_temp, content_temp, importance_temp, due_temp) {
         }),
     }).then((response) => {
         console.log(response);
+        window.location.reload(true);
     });
 }
 
@@ -107,7 +99,6 @@ const Main = ({activeNote, onUpdateNote}) => {
                         onChange={(e) => onEditField("content", e.target.value)}
                     />
                     <Select
-               //         {...CustomSelectProps}
                         className="app-main-note-edit-dropdown-importance"
                         styles={customStyles}
                         id="importance"
@@ -124,12 +115,6 @@ const Main = ({activeNote, onUpdateNote}) => {
                     <button
                         onClick={() => Post(activeNote.title, activeNote.content, selectedValue, startDate)}>Submit
                     </button>
-                </div>
-                <div className="app-main-note-preview">
-                    <h1 className="preview-title">{activeNote.title}</h1>
-                    <ReactMarkdown className="markdown-preview">
-                        {activeNote.content}
-                    </ReactMarkdown>
                 </div>
             </div>
         );

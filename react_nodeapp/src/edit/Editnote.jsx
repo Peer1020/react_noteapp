@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import ReactMarkdown from "react-markdown";
 import Select from "react-select";
 import {useState} from "react";
 import DatePicker from "react-datepicker";
@@ -7,16 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@material-ui/core/Checkbox";
 import {useParams} from "react-router";
 import history from "../history";
-
-
-const importance_array = [
-    {value: '', label: 'Select importance',},
-    {value: 1, label: 'Blocker'},
-    {value: 2, label: 'Critical'},
-    {value: 3, label: 'Major'},
-    {value: 4, label: 'Minor'},
-    {value: 5, label: 'Trivial'},
-];
+import importance_array from '../utils/array_importance';
 
 const customStyles = {
     control: base => ({
@@ -140,20 +130,16 @@ const Editnote = () => {
                             onChange={(e) => onEditField("finished", e.target.checked)}
                         />
                     </p>
-                    <div>
+                    <section>
                         <button
                             onClick={(e) => Update(location.id, notes3.title, notes3.content, notes3.importance, notes3.due, notes3.finished)}>Update
                         </button>
+                    </section>
+                    <section>
                         <button
                             onClick={() =>_navigateToUrl('/')}>Cancel
                         </button>
-                    </div>
-                </div>
-                <div className="app-main-note-preview">
-                    <h1 className="preview-title">{notes3.title}</h1>
-                    <ReactMarkdown className="markdown-preview">
-                        {notes3.content}
-                    </ReactMarkdown>
+                    </section>
                 </div>
             </div>
         );

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import history from '../history';
 import {CheckBox} from "react-native-web";
 import {FormControlLabel, makeStyles} from "@material-ui/core";
+import importance_array from '../utils/array_importance';
 
 const filterStyles = makeStyles(theme => ({
     root: {
@@ -46,9 +47,8 @@ const Sidebar = ({
         },
         [setNotes2]);
 
-
     function sortByCreatedDate() {
-        setNotes2([...notes2].sort((a, b) => a._id.localeCompare(b._id)))
+        setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)))
     }
 
     function sortByDate() {
@@ -71,7 +71,6 @@ const Sidebar = ({
             setStateFinished(true);
         } else {
             setStateFinished(false);
-            /*    window.location.reload(true) */
             const response = await fetch('/notes');
             const json = await response.json();
             setNotes2(json);
@@ -116,7 +115,7 @@ const Sidebar = ({
                             <button onClick={() => _navigateToUrl('notes/' + _id)}>Edit</button>
                         </div>
                         <p>{content && content.substr(0, 100) + "..."}</p>
-                        <p>{importance}</p>
+                        <p>{importance_array[importance].label}</p>
                         <small className="note-meta">
                             Due{" "}
                             {new Date(due).toLocaleDateString("en-GB", {
