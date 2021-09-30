@@ -47,8 +47,23 @@ const Sidebar = ({
         },
         [setNotes2]);
 
+    const bold_Theme = 'bold_theme';
+    const [theme1, setTheme1] = useState({boldTheme: false});
+    const {boldTheme} = theme1;
+    let className = 'test';
+    if (boldTheme) className += bold_Theme;
+
+    const SwitchTheme = () => {
+        setTheme1((prevState) => ({
+            boldTheme: !prevState.boldTheme
+        }))
+    }
+
+
     function sortByCreatedDate() {
-        setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)))
+        setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)));
+        setTheme1((prevState) => ({
+            boldTheme: !prevState.boldTheme}));
     }
 
     function sortByDate() {
@@ -91,7 +106,10 @@ const Sidebar = ({
             <div className="app-sidebar-header">
                 <h1>Notes</h1>
                 <button onClick={onAddNote}>Add</button>
-                <button onClick={sortByCreatedDate}>Sort Created Date</button>
+                <button
+                    className="test"
+                    onClick={sortByCreatedDate}
+                >Sort Created Date</button>
                 <button onClick={sortByDate}>Sort Due Date</button>
                 <button onClick={sortByImportance}> Sort Importance</button>
             </div>

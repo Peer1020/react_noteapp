@@ -107,6 +107,7 @@ const Main = ({activeNote, onUpdateNote}) => {
                         onChange={handleChange}
                     />
                     <DatePicker
+                        className="app-main-note-edit-dropdown-datepicker"
                         id="due"
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}

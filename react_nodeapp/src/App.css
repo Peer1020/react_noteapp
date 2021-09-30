@@ -26,6 +26,7 @@ button {
   cursor: pointer;
   color: #08c;
   margin-top: 15px;
+  font-weight: bold;
 }
 button:hover {
   color: #04c;
@@ -75,10 +76,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
-.app-sidebar-note button {
-  color: crimson;
-  font-weight: bold;
-}
+
 .app-sidebar-note p {
   margin: 10px 0;
 }
@@ -137,7 +135,7 @@ textarea {
 }
 .app-main-note-edit input {
   height: 50px;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .app-main-note-error{
@@ -153,6 +151,11 @@ textarea {
   height: 5px;
 }
 
+.testbold_theme{
+  font-weight: bold;
+}
+
+
 /* DarkTheme */
 
 
@@ -167,6 +170,7 @@ textarea {
   color: aliceblue;
   display: flex;
 }
+
 
 @media (max-width: 700px) {
   .Appdark_theme{
