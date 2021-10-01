@@ -7,6 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {useParams} from "react-router";
 import history from "../history";
 import importance_array from '../utils/array_importance';
+import {NotesEndpoint} from "../api";
 
 const customStyles = {
     control: base => ({
@@ -33,7 +34,7 @@ const customStylesDatepicker = {
 
 function Update(id_temp, title_temp, content_temp, importance_temp, due_temp, finished_temp) {
 
-    let response = fetch("/notes/" + id_temp, {
+    let response = fetch(NotesEndpoint + "/" + id_temp, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

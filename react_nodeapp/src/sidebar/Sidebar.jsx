@@ -3,6 +3,7 @@ import history from '../history';
 import {CheckBox} from "react-native-web";
 import {FormControlLabel, makeStyles} from "@material-ui/core";
 import importance_array from '../utils/array_importance';
+import {NotesEndpoint} from "../api";
 
 const filterStyles = makeStyles(theme => ({
     root: {
@@ -35,35 +36,27 @@ const Sidebar = ({
 
     const [notes2, setNotes2] = useState(storedData);
 
+    const [error, setError] = useState(null);
+
     useEffect(() => {
             if (notes2.length === 0) {
                 const fetchData = async () => {
-                    const response = await fetch('/notes');
-                    const json = await response.json();
-                    setNotes2(json);
+                    const response = await fetch(NotesEndpoint);
+                    if (response.status === 200) {
+                        const json = await response.json();
+                        setNotes2(json);
+                    } else {
+                        setError("Error fetching data from Server.");
+                    }
                 }
-                fetchData();
+                fetchData().catch(setError("Error fetching data from Server."));
             }
         },
         [setNotes2]);
 
-    const bold_Theme = 'bold_theme';
-    const [theme1, setTheme1] = useState({boldTheme: false});
-    const {boldTheme} = theme1;
-    let className = 'test';
-    if (boldTheme) className += bold_Theme;
-
-    const SwitchTheme = () => {
-        setTheme1((prevState) => ({
-            boldTheme: !prevState.boldTheme
-        }))
-    }
-
 
     function sortByCreatedDate() {
         setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)));
-        setTheme1((prevState) => ({
-            boldTheme: !prevState.boldTheme}));
     }
 
     function sortByDate() {
@@ -86,9 +79,13 @@ const Sidebar = ({
             setStateFinished(true);
         } else {
             setStateFinished(false);
-            const response = await fetch('/notes');
-            const json = await response.json();
-            setNotes2(json);
+            const response = await fetch(NotesEndpoint);
+            if (response.status === 200) {
+                const json = await response.json();
+                setNotes2(json);
+            } else {
+                setError(setError("Error fetching data from Server."))
+            }
         }
     }
 
@@ -106,10 +103,7 @@ const Sidebar = ({
             <div className="app-sidebar-header">
                 <h1>Notes</h1>
                 <button onClick={onAddNote}>Add</button>
-                <button
-                    className="test"
-                    onClick={sortByCreatedDate}
-                >Sort Created Date</button>
+                <button onClick={sortByCreatedDate}>Sort Created Date</button>
                 <button onClick={sortByDate}>Sort Due Date</button>
                 <button onClick={sortByImportance}> Sort Importance</button>
             </div>
@@ -122,11 +116,13 @@ const Sidebar = ({
                         classes={classes}
                         value={stateFinished}
                         onClick={filterFinished}
-                    />}
+                    >Checkbox</CheckBox>
+                }
             />
+            {error && <h4 role="alert">{error}</h4>}
             <div className="app-sidebar-notes">
                 {notes2.map(({_id, title, content, importance, due, finished}, i) => (
-                    <div className={`app-sidebar-note ${_id === activeNote && "active"}`}
+                    <div key={i} className={`app-sidebar-note ${_id === activeNote && "active"}`}
                          onClick={() => setActiveNote(_id)}>
                         <div className="sidebar-note-title">
                             <strong>{title}</strong>
@@ -141,7 +137,7 @@ const Sidebar = ({
                                 minute: "2-digit",
                             })}
                         </small>
-                        <p> Finished <CheckBox value={finished}/></p>
+                        <div> Finished <CheckBox key={i} value={finished}/></div>
                     </div>
                 ))}
             </div>

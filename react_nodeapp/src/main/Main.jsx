@@ -4,6 +4,7 @@ import {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import importance_array from '../utils/array_importance';
+import {NotesEndpoint} from "../api";
 
 const customStyles={
     control: base=>({
@@ -30,7 +31,7 @@ const customStylesDatepicker={
 
 function Post(title_temp, content_temp, importance_temp, due_temp) {
 
-    let response = fetch("/notes", {
+    let response = fetch(NotesEndpoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

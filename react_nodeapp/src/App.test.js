@@ -1,30 +1,39 @@
-import { render, screen } from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import App from './App';
 import '@testing-library/jest-dom/extend-expect'
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import {rest} from 'msw'
+import {setupServer} from 'msw/node'
 import React from 'react'
+import {NotesEndpoint} from "./api";
 
 /*** Setup ***/
 
 const handlers = [
-  rest.get('/notes', (req, res, ctx) => {
+  rest.get(NotesEndpoint, (req, res, ctx) => {
     return res(
-        ctx.json([
-          { _id: 1, title: 'Tobi' },
-          { _id: 2, title: 'Patrik' }
-        ])
+        ctx.json([{
+          "_id": "614c9842f5d0b002935bf82f",
+          "title": "Clean rooms",
+          "content": "Clean kitchen and living room.",
+          "importance": 3,
+          "due": "2021-10-01T23:59:99.999Z",
+          "finished": true,
+          "createdAt": "2021-09-23T15:07:46.161Z",
+          "updatedAt": "2021-09-30T08:13:36.341Z",
+          "__v": 0
+        }, {
+          "_id": "614c9843f5d0b002935bf831",
+          "title": "Bring out garbage",
+          "content": "Dispose of plastic and residual waste.",
+          "importance": 5,
+          "due": "2021-10-02T15:00:00.000Z",
+          "finished": false,
+          "createdAt": "2021-09-23T15:07:47.923Z",
+          "updatedAt": "2021-09-30T08:13:49.726Z",
+          "__v": 0
+        }])
     )
   })
-  /*,
-  rest.get(TodosEndpoint, (req, res, ctx) => {
-    return res(
-        ctx.json([
-          { id: 1, title: 'Cooking' },
-          { id: 2, title: 'Cleaning' }
-        ])
-    )
-  })*/
 ]
 
 const server = setupServer(...handlers)
@@ -36,39 +45,28 @@ afterAll(() => server.close())
 /*** Tests ***/
 
 test('renders title', async () => {
-  render(<App />)
+  render(<App/>)
 
   const heading = await screen.findByRole('heading')
 
-  expect(heading).toHaveTextContent('My Users')
-})
-
-test('fetches and renders Tobi', async () => {
-  render(<App />)
-
-  const tobi = await screen.findByText(/Tobi/)
-  const patrik = await screen.findByText(/Patrik/)
-
-  expect(tobi).toBeTruthy()
-  expect(patrik).toBeTruthy()
+  expect(heading).toHaveTextContent('Notes')
 })
 
 test('fetches and renders todos', async () => {
-  render(<App />)
+  render(<App/>)
 
-  screen.getByText(/Load Todos/).click()
-  const cooking = await screen.findByText(/Cooking/)
-  const cleaning = await screen.findByText(/Cleaning/)
+  const cleaning = await screen.findByText(/Clean rooms/)
+  const garbage = await screen.findByText(/Bring out garbage/)
 
-  expect(cooking).toBeTruthy()
   expect(cleaning).toBeTruthy()
+  expect(garbage).toBeTruthy()
 })
 
-test('handles todo API error', async () => {
-  server.use(rest.get(UsersEndpoint, (req, res, ctx) => res(ctx.status(500))))
+test('displays api errors', async () => {
+  server.use(rest.get(NotesEndpoint, (req, res, ctx) => res(ctx.status(500))))
 
   render(<App />)
-  const alertElement = await screen.findByRole('alert')
+  const alertElement = await screen.findByText('alert')
 
-  expect(alertElement).toHaveTextContent(/Server Error/)
+  expect(alertElement).toHaveTextContent(/Error/)
 })

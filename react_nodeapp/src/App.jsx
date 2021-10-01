@@ -9,24 +9,22 @@ import {BrowserRouter, Route} from "react-router-dom";
 
 function App() {
 
-    const [notes, setNotes] =
-        useState([]
-        );
+    const [notes, setNotes] = useState([]);
+
+    const [error, setError] = useState(null);
 
     const fetchData = () => {
-        return fetch('/notes', {
+        return fetch('NotesEndpoint', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
             }
         ).then(function (response) {
-            console.log(response)
             return response.json();
         }).then(function (myJson) {
-            console.log(myJson)
             setNotes(myJson);
-        });
+        }).catch(setError("Error fetching data from Server."));
     }
 
     useEffect(() => fetchData(), []);
@@ -102,6 +100,7 @@ function App() {
                     {...label}
                     onChange={SwitchTheme}
                 />
+                {error && <h4 role="alert">{error}</h4>}
                 <Route exact path="/">
                     <Sidebar
                         className={className}
