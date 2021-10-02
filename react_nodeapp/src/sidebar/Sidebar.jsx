@@ -15,86 +15,82 @@ const filterStyles = makeStyles(theme => ({
     },
 }));
 
-
 const Sidebar = ({
                      onAddNote,
                      activeNote,
                      setActiveNote
                  }) => {
 
-    const storedDataTemp = () => {
-        const temp = localStorage.getItem("sort")
-        if (temp === null) {
-            localStorage.setItem("sort", []);
-            return []
-        } else {
-            return JSON.parse(localStorage.getItem("sort"));
-        }
-    };
 
-    const storedData = storedDataTemp();
+    const [sortBy, setSortBy] = useState(loadSortByFromStorage())
 
-    const [notes2, setNotes2] = useState(storedData);
+    const [filterDone, setFilterDone] = useState(false)
 
-    const [error, setError] = useState(null)
+    const [notes, setNotes] = useState([])
+
+    const [error, setError] = useState(null);
+
 
     useEffect(() => {
-            if (notes2.length === 0) {
-                const fetchData = async () => {
-                    const response = await fetch(NotesEndpoint);
-                    if (response.status === 200) {
-                        const json = await response.json();
-                        setNotes2(json);
-                    } else {
-                        setError("Error fetching data from Server.");
-                    }
-                }
-                fetchData().catch(setError("Error fetching data from Server."));
-            }
-        },
-        [setNotes2]);
+        loadNotes();
+    }, [setNotes])
 
-    function sortByCreatedDate() {
-        setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)));
-    }
-
-    function sortByDate() {
-        setNotes2([...notes2].sort((a, b) => Date.parse(b.due) - Date.parse(a.due)))
-    }
-
-
-    function sortByImportance() {
-        setNotes2([...notes2].sort((a, b) => b.importance - a.importance))
-    }
-
-    localStorage.setItem("sort", JSON.stringify(notes2));
-
-    const [stateFinished, setStateFinished] = useState(false);
-    const label = {inputProps: {'arial-label': 'Checkbox'}};
-
-    async function filterFinished() {
-        if (stateFinished === false) {
-            setNotes2([...notes2].filter((a) => a.finished === true));
-            setStateFinished(true);
-        } else {
-            setStateFinished(false);
+    async function loadNotes() {
+        const fetchData = async () => {
             const response = await fetch(NotesEndpoint);
             if (response.status === 200) {
                 const json = await response.json();
-                setNotes2(json);
+                setNotes(json);
             } else {
-                setError(setError("Error fetching data from Server."))
+                setError("Error fetching data from Server.");
             }
+        }
+        fetchData();
+    }
+
+    function loadSortByFromStorage() {
+        const sortBy = localStorage.getItem("sortBy")
+        if (sortBy === null) {
+            localStorage.setItem("sortBy", "create-date");
+            return "create-date" // Default sorting
+        } else {
+            return sortBy;
         }
     }
 
+    function changeSortBy(sortBy) {
+        setSortBy(sortBy)
+        localStorage.setItem("sortBy", sortBy);
+    }
+
+    const label = {inputProps: {'arial-label': 'Checkbox'}};
+
     const classes = filterStyles();
 
-    function _navigateToUrl(notes1) {
+    function _navigateToUrl(url) {
         history.push({
-            pathname: notes1
+            pathname: url
         });
         window.location.reload(true);
+    }
+
+    const getSortedAndFilteredNotes = () =>  {
+
+        let temp = notes
+
+        if (filterDone) {
+            temp = temp.filter(note => note.finished === false);
+        }
+
+        if (sortBy === "create-date") {
+            return [...temp].sort((a,b) => b._id.localeCompare(a._id));
+        } else if (sortBy === "due-date") {
+            return [...temp].sort((a, b) => Date.parse(b.due) - Date.parse(a.due));
+        } else if (sortBy === "importance") {
+            return [...temp].sort((a, b) => b.importance - a.importance);
+        } else {
+            return temp;
+        }
     }
 
     return (
@@ -102,9 +98,9 @@ const Sidebar = ({
             <div className="app-sidebar-header">
                 <h1>Notes</h1>
                 <button onClick={onAddNote}>Add</button>
-                <button onClick={sortByCreatedDate}>Sort Created Date</button>
-                <button onClick={sortByDate}>Sort Due Date</button>
-                <button onClick={sortByImportance}> Sort Importance</button>
+                <button onClick={() => changeSortBy("create-date")}>Sort Created Date</button>
+                <button onClick={() => changeSortBy("due-date")}>Sort Due Date</button>
+                <button onClick={() => changeSortBy("importance")}> Sort Importance</button>
             </div>
             <FormControlLabel
                 classes={classes}
@@ -113,14 +109,14 @@ const Sidebar = ({
                     <CheckBox
                         {...label}
                         classes={classes}
-                        value={stateFinished}
-                        onClick={filterFinished}
+                        value={filterDone}
+                        onClick={() => setFilterDone(prev => !prev)}
                     >Checkbox</CheckBox>
                 }
             />
             {error && <h4 role="alert">{error}</h4>}
             <div className="app-sidebar-notes">
-                {notes2.map(({_id, title, content, importance, due, finished}, i) => (
+                {notes && getSortedAndFilteredNotes().map(({_id, title, content, importance, due, finished}, i) => (
                     <div key={i} className={`app-sidebar-note ${_id === activeNote && "active"}`}
                          onClick={() => setActiveNote(_id)}>
                         <div className="sidebar-note-title">
