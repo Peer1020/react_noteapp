@@ -1,1 +1,1 @@
-export const NotesEndpoint = '/notes'
+export const NotesEndpoint = 'api/notes'

@@ -6,15 +6,16 @@ import Sidebar from './sidebar/Sidebar';
 import Editnote from './edit/Editnote';
 import {Switch} from "@material-ui/core";
 import {BrowserRouter, Route} from "react-router-dom";
+import {NotesEndpoint} from "./api";
 
 function App() {
 
     const [notes, setNotes] = useState([]);
 
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null)
 
     const fetchData = () => {
-        return fetch('NotesEndpoint', {
+        return fetch(NotesEndpoint, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -100,7 +101,6 @@ function App() {
                     {...label}
                     onChange={SwitchTheme}
                 />
-                {error && <h4 role="alert">{error}</h4>}
                 <Route exact path="/">
                     <Sidebar
                         className={className}
@@ -127,4 +127,5 @@ function App() {
         </BrowserRouter>
     );
 }
+
 export default App;

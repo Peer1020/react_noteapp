@@ -1,30 +1,32 @@
 version: '2'
 services:
-    client:
-      build:
-        dockerfile: Dockerfile
-        context: ./react_nodeapp
-      command: npm start
-      volumes:
-        - .:/usr/app/
-        - /usr/app/node_modules
-      ports:
-        - "3000"
-    server:
-      build:
-        dockerfile: Dockerfile
-        context: ./server
-      command: node server.js
-      volumes:
-        - .:/usr/app/
-        - /usr/app/node_modules
-      ports:
-        - "5000"
-      depends_on:
-        - mongodb
-      environment:
-          DATABASE_URL: mongodb://localhost:27017/node_app
-    mongodb:
-      image: mongo:latest
-      ports:
-        - "27017"
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./react_nodeapp
+    command: npm start
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    environment:
+      BACKEND_URL: http://server:5000
+    ports:
+      - 3000:3000
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: node server.js
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongodb
+    environment:
+      DATABASE_URL: mongodb://mongodb:27017/node_app
+  mongodb:
+    image: clutteredcode/mongo-alpine:latest
+    ports:
+      - 27017:27017

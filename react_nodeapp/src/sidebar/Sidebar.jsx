@@ -19,12 +19,12 @@ const filterStyles = makeStyles(theme => ({
 const Sidebar = ({
                      onAddNote,
                      activeNote,
-                    setActiveNote
+                     setActiveNote
                  }) => {
 
     const storedDataTemp = () => {
         const temp = localStorage.getItem("sort")
-        if (temp === "null") {
+        if (temp === null) {
             localStorage.setItem("sort", []);
             return []
         } else {
@@ -36,7 +36,7 @@ const Sidebar = ({
 
     const [notes2, setNotes2] = useState(storedData);
 
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null)
 
     useEffect(() => {
             if (notes2.length === 0) {
@@ -53,7 +53,6 @@ const Sidebar = ({
             }
         },
         [setNotes2]);
-
 
     function sortByCreatedDate() {
         setNotes2([...notes2].sort((a, b) => b._id.localeCompare(a._id)));
