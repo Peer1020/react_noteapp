@@ -61,8 +61,7 @@ const Sidebar = ({
     function loadFilterFromStorage(){
         const filter = localStorage.getItem("filter_state")
         if (filter === "default") {
-            localStorage.setItem("filter_state", "default");
-            return false // Default sorting
+            return false
         } else {
             return true;
         }
@@ -112,8 +111,6 @@ const Sidebar = ({
             return [...temp].sort((a, b) => b.importance - a.importance);
         } else if (sortBy === "filter") {
             return [...temp].filter(note => note.finished === true);
-        } else if (sortBy === "filter_out") {
-                return temp;
         } else {
             return temp;
         }
