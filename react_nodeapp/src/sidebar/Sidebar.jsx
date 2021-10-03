@@ -65,12 +65,13 @@ const Sidebar = ({
 
     function changeFilter(sortBy) {
         setFilterDone(prev => !prev);
-        changeSortBy("filter");
         if (filterDone===false) {
             localStorage.setItem("filter_state", sortBy);
+            changeSortBy("filter");
         }
         else {
-            localStorage.removeItem("filter_state");
+            localStorage.setItem("filter_state", "default");
+            changeSortBy("filter_out");
         }
     }
 
@@ -100,7 +101,9 @@ const Sidebar = ({
         } else if (sortBy === "importance") {
             return [...temp].sort((a, b) => b.importance - a.importance);
         } else if (sortBy === "filter") {
-            return [...temp].filter(note => note.finished===true);
+            return [...temp].filter(note => note.finished === true);
+        } else if (sortBy === "filter_out") {
+                return temp;
         } else {
             return temp;
         }
