@@ -24,7 +24,7 @@ const Sidebar = ({
 
     const [sortBy, setSortBy] = useState(loadSortByFromStorage())
 
-    const [filterDone, setFilterDone] = useState(false)
+    const [filterDone, setFilterDone] = useState(loadFilterFromStorage())
 
     const [notes, setNotes] = useState([])
 
@@ -55,6 +55,16 @@ const Sidebar = ({
             return "create-date" // Default sorting
         } else {
             return sortBy;
+        }
+    }
+
+    function loadFilterFromStorage(){
+        const filter = localStorage.getItem("filter_state")
+        if (filter === "default") {
+            localStorage.setItem("filter_state", "default");
+            return false // Default sorting
+        } else {
+            return true;
         }
     }
 
