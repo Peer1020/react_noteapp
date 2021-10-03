@@ -1,5 +1,8 @@
 Variante 1: Docker
 
+docker-compose up -d
+
+Netzwerkt besteht aus dem Server,Client und einer Mongo DB
 
 
 Variante 2: Starten mit der der "Brechstange"

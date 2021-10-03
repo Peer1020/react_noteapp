@@ -12,7 +12,7 @@ function App() {
 
     const [notes, setNotes] = useState([]);
 
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
     const fetchData = () => {
         return fetch(NotesEndpoint, {
@@ -101,6 +101,7 @@ function App() {
                     {...label}
                     onChange={SwitchTheme}
                 />
+                {/*   {error && <h4 role="alert">{error}</h4>} */}
                 <Route exact path="/">
                     <Sidebar
                         className={className}
@@ -127,5 +128,4 @@ function App() {
         </BrowserRouter>
     );
 }
-
 export default App;
