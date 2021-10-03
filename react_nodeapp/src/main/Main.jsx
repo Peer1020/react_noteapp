@@ -62,8 +62,6 @@ const Main = ({activeNote, onUpdateNote}) => {
         };
 
     function validateForm(field, value) {
-        const target=value.target;
-        let error='';
         if(!value){
             setState("Title field cannot be empty");
         } else{

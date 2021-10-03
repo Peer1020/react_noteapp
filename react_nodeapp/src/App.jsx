@@ -25,8 +25,8 @@ function App() {
             return response.json();
         }).then(function (myJson) {
             setNotes(myJson);
-        }).catch(setError("Error fetching data from Server."));
-    }
+        }).catch(error=> setError("Error fetching data"))
+        };
 
     useEffect(() => fetchData(), []);
 
@@ -97,11 +97,11 @@ function App() {
         <BrowserRouter>
             <div
                 className={className}>
+                {error && <p role="alert">{error}</p>}
                 <Switch
                     {...label}
                     onChange={SwitchTheme}
                 />
-                {error && <h4 role="alert">{error}</h4>}
                 <Route exact path="/">
                     <Sidebar
                         className={className}

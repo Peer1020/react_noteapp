@@ -47,12 +47,11 @@ function Update(id_temp, title_temp, content_temp, importance_temp, due_temp, fi
             finished: finished_temp
         }),
     }).then((response) => {
-        console.log(response);
     });
     _navigateToUrl('/')
 }
 
-function _navigateToUrl (notes) {
+function _navigateToUrl(notes) {
     history.push({
         pathname: notes
     });
@@ -73,10 +72,11 @@ const Editnote = () => {
         });
         const location = useParams();
 
+        const [state, setState] = useState(null);
+
         useEffect(() => {
             const fetchSingleData = async () => {
-                const response = await fetch(NotesEndpoint+ "/" + location.id);
-                console.log(response);
+                const response = await fetch(NotesEndpoint + "/" + location.id);
                 const json = await response.json();
                 setNotes3(json);
             }
@@ -84,12 +84,20 @@ const Editnote = () => {
 
         }, [setNotes3]);
 
+        function validateForm(field, value) {
+            if (!value) {
+                setState("Title field cannot be empty");
+            } else {
+                setState(null);
+            }
+        }
+
         const onEditField = (field, value) => {
-            console.log(value);
             setNotes3({
                 ...notes3,
                 [field]: value,
             });
+            validateForm(field, value);
         };
 
         return (
@@ -103,6 +111,7 @@ const Editnote = () => {
                         value={notes3.title}
                         autoFocus
                     />
+                    {state && <p className="app-main-note-error">{state}</p>}
                     <textarea
                         id="content"
                         placeholder="Write your note here..."
@@ -127,7 +136,7 @@ const Editnote = () => {
                         <Checkbox
                             label="Finished"
                             id="finished"
-                            checked={(notes3.finished === true) ? "true": ""}
+                            checked={(notes3.finished === true) ? "true" : ""}
                             onChange={(e) => onEditField("finished", e.target.checked)}
                         />
                     </p>
@@ -138,7 +147,7 @@ const Editnote = () => {
                     </section>
                     <section>
                         <button
-                            onClick={() =>_navigateToUrl('/')}>Cancel
+                            onClick={() => _navigateToUrl('/')}>Cancel
                         </button>
                     </section>
                 </div>
