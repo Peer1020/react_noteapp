@@ -27,7 +27,7 @@ const handlers = [
           "content": "Dispose of plastic and residual waste.",
           "importance": 5,
           "due": "2021-10-02T15:00:00.000Z",
-          "finished": false,
+          "finished": true,
           "createdAt": "2021-09-23T15:07:47.923Z",
           "updatedAt": "2021-09-30T08:13:49.726Z",
           "__v": 0
@@ -56,10 +56,10 @@ test('fetches and renders todos', async () => {
   render(<App/>)
 
   const cleaning = await screen.findByText(/Clean rooms/);
- // const garbage = await screen.findByText(/Bring out garbage/);
+  const garbage = await screen.findByText(/Bring out garbage/);
 
   expect(cleaning).toBeTruthy()
-//  expect(garbage).toBeTruthy()
+  expect(garbage).toBeTruthy()
 })
 
 test('displays api errors', async () => {
