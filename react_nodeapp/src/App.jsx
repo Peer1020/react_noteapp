@@ -25,23 +25,62 @@ function App() {
             return response.json();
         }).then(function (myJson) {
             setNotes(myJson);
-        }).catch(error=> setError("Error fetching data"))
-        };
+        }).catch(error => setError("Error fetching data"))
+    };
 
     useEffect(() => fetchData(), []);
 
+
     const Dark_Theme = 'dark_theme';
-    const [theme, setTheme] = useState({darkTheme: false});
-    const label = {inputProps: {'aria-label': 'Switch-Demo'}};
+    //  const [theme, setTheme] = useState({darkTheme: false});
+    const [theme, setTheme] = useState(checkStyle());
+    console.log(theme);
+
+ //   const label = {inputProps: {'aria-label': 'Switch-Demo'}};
+    const[label,setLabel]=useState(checkBox);
     const {darkTheme} = theme;
+
     let className = 'App';
     if (darkTheme) className += Dark_Theme;
+
+
+    function checkStyle() {
+        const check = localStorage.getItem("style");
+        if (check === null) {
+            return {darkTheme: false};
+        } else if (check === "true") {
+            return {darkTheme: false}
+        } else if (check=== "false"){
+            return {darkTheme: true}
+        }
+        ;
+
+    }
+    function checkBox() {
+        const check = localStorage.getItem("check");
+        if (check === null) {
+            return {checked: false};
+        } else if (check === "true") {
+            return {checked: false}
+        } else if (check=== "false"){
+            return {checked: true}
+        }
+        ;
+
+    }
 
     const SwitchTheme = () => {
         setTheme((prevState) => ({
             darkTheme: !prevState.darkTheme
-        }))
+        }));
+        setLabel((prevState) => ({
+            checked: !prevState.checked
+        }));
+        localStorage.setItem("check", label.checked);
+        localStorage.setItem("style", theme.darkTheme);
     }
+
+
 
     const [activeNote, setActiveNote] =
         useState(-1);
@@ -128,4 +167,5 @@ function App() {
         </BrowserRouter>
     );
 }
+
 export default App;

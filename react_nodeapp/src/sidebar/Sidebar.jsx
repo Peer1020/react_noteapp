@@ -108,7 +108,7 @@ const Sidebar = ({
         } else if (sortBy === "due-date") {
             return [...temp].sort((a, b) => Date.parse(b.due) - Date.parse(a.due));
         } else if (sortBy === "importance") {
-            return [...temp].sort((a, b) => b.importance - a.importance);
+            return [...temp].sort((a, b) => a.importance - b.importance);
         } else if (sortBy === "filter") {
             return [...temp].filter(note => note.finished === true);
         } else {
