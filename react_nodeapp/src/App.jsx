@@ -101,7 +101,6 @@ function App() {
                     {...label}
                     onChange={SwitchTheme}
                 />
-                {/*   {error && <h4 role="alert">{error}</h4>} */}
                 <Route exact path="/">
                     <Sidebar
                         className={className}

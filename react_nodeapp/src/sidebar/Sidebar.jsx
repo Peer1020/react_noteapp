@@ -63,6 +63,17 @@ const Sidebar = ({
         localStorage.setItem("sortBy", sortBy);
     }
 
+    function changeFilter(sortBy) {
+        setFilterDone(prev => !prev);
+        changeSortBy("filter");
+        if (filterDone===false) {
+            localStorage.setItem("filter_state", sortBy);
+        }
+        else {
+            localStorage.removeItem("filter_state");
+        }
+    }
+
     const label = {inputProps: {'arial-label': 'Checkbox'}};
 
     const classes = filterStyles();
@@ -79,7 +90,7 @@ const Sidebar = ({
         let temp = notes
 
         if (filterDone) {
-            temp = temp.filter(note => note.finished === false);
+            temp = temp.filter(note => note.finished === true);
         }
 
         if (sortBy === "create-date") {
@@ -88,6 +99,8 @@ const Sidebar = ({
             return [...temp].sort((a, b) => Date.parse(b.due) - Date.parse(a.due));
         } else if (sortBy === "importance") {
             return [...temp].sort((a, b) => b.importance - a.importance);
+        } else if (sortBy === "filter") {
+            return [...temp].filter(note => note.finished===true);
         } else {
             return temp;
         }
@@ -110,7 +123,7 @@ const Sidebar = ({
                         {...label}
                         classes={classes}
                         value={filterDone}
-                        onClick={() => setFilterDone(prev => !prev)}
+                        onClick={() => changeFilter("filter")}
                     >Checkbox</CheckBox>
                 }
             />

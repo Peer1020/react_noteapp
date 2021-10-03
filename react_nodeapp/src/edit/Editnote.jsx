@@ -75,7 +75,7 @@ const Editnote = () => {
 
         useEffect(() => {
             const fetchSingleData = async () => {
-                const response = await fetch('/notes/' + location.id);
+                const response = await fetch(NotesEndpoint+ "/" + location.id);
                 console.log(response);
                 const json = await response.json();
                 setNotes3(json);
